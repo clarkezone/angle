@@ -29,9 +29,9 @@ if (!build_with_chromium) {
     deps = [
       ":angle_shader_translator",
       ":translator_fuzzer",
-      ":xxhash_fuzzer",
-      "//samples:all",
-      "//src/tests:all",
+      #":xxhash_fuzzer",
+      #"//samples:all",
+      #"//src/tests:all",
     ]
   }
 }
@@ -244,14 +244,14 @@ angle_source_set("xxhash") {
   configs -= [ "${angle_root}:extra_warnings" ]
 }
 
-fuzzer_test("xxhash_fuzzer") {
-  sources = [
-    "src/common/third_party/xxhash/xxhash_fuzzer.cpp",
-  ]
-  deps = [
-    ":xxhash",
-  ]
-}
+#fuzzer_test("xxhash_fuzzer") {
+#  sources = [
+#    "src/common/third_party/xxhash/xxhash_fuzzer.cpp",
+#  ]
+#  deps = [
+#    ":xxhash",
+#  ]
+#}
 
 angle_static_library("angle_common") {
   sources = libangle_common_sources
@@ -272,9 +272,9 @@ angle_static_library("angle_common") {
   ]
   public_configs += [ ":angle_common_config" ]
   all_dependent_configs = [ ":angle_release_asserts_config" ]
-  if (use_fuzzing_engine) {
-    all_dependent_configs += [ ":angle_disable_pool_alloc" ]
-  }
+#  if (use_fuzzing_engine) {
+#    all_dependent_configs += [ ":angle_disable_pool_alloc" ]
+#  }
 }
 
 config("angle_image_util_config") {
@@ -482,9 +482,9 @@ config("angle_backend_config") {
   }
   if (angle_enable_gl) {
     defines += [ "ANGLE_ENABLE_OPENGL" ]
-    if (use_x11) {
-      defines += [ "ANGLE_USE_X11" ]
-    }
+#    if (use_x11) {
+#      defines += [ "ANGLE_USE_X11" ]
+#    }
     if (angle_enable_gl_null) {
       defines += [ "ANGLE_ENABLE_OPENGL_NULL" ]
     }
@@ -534,18 +534,18 @@ if (angle_enable_vulkan) {
 
   # Use this target to include everything ANGLE needs for Vulkan.
   group("angle_vulkan") {
-    public_deps = [
-      "$angle_root/third_party/vulkan-headers:vulkan_headers",
-    ]
+    #public_deps = [
+    #  "$angle_root/third_party/vulkan-headers:vulkan_headers",
+    #]
     public_configs = [ ":vulkan_config" ]
     data_deps = []
     if (!is_android && !is_fuchsia) {
-      deps = [
-        "$angle_root/third_party/vulkan-loader:libvulkan",
-      ]
-      data_deps += [ "$angle_root/third_party/vulkan-tools:VkICD_mock_icd" ]
-      public_configs +=
-          [ "$angle_root/third_party/vulkan-loader:vulkan_loader_config" ]
+      #deps = [
+      #  "$angle_root/third_party/vulkan-loader:libvulkan",
+      #]
+      #data_deps += [ "$angle_root/third_party/vulkan-tools:VkICD_mock_icd" ]
+      #public_configs +=
+      #    [ "$angle_root/third_party/vulkan-loader:vulkan_loader_config" ]
     }
     if (is_fuchsia) {
       public_deps += [
@@ -561,10 +561,10 @@ if (angle_enable_vulkan) {
           "//third_party/fuchsia-sdk:vulkan_validation",
         ]
       } else {
-        data_deps += [ "$angle_root/third_party/vulkan-validation-layers:vulkan_validation_layers" ]
-        if (!is_android) {
-          data_deps += [ "$angle_root/third_party/vulkan-validation-layers:vulkan_gen_json_files" ]
-        }
+        #data_deps += [ "$angle_root/third_party/vulkan-validation-layers:vulkan_validation_layers" ]
+        #if (!is_android) {
+        #  data_deps += [ "$angle_root/third_party/vulkan-validation-layers:vulkan_gen_json_files" ]
+        #}
       }
     }
   }
@@ -626,15 +626,15 @@ angle_static_library("libANGLE") {
     if (is_win) {
       sources += libangle_gl_wgl_sources
     }
-    if (use_x11) {
-      sources += libangle_gl_glx_sources
-      deps += [ "src/third_party/libXNVCtrl:libXNVCtrl" ]
-      libs += [
-        "X11",
-        "Xi",
-        "Xext",
-      ]
-    }
+    #if (use_x11) {
+    #  sources += libangle_gl_glx_sources
+    #  deps += [ "src/third_party/libXNVCtrl:libXNVCtrl" ]
+    #  libs += [
+    #    "X11",
+    #    "Xi",
+    #    "Xext",
+    #  ]
+    #}
     if (is_mac) {
       sources += libangle_gl_cgl_sources
       libs += [
@@ -680,11 +680,11 @@ angle_static_library("libANGLE") {
     }
     deps += [
       ":angle_vulkan",
-      "${angle_glslang_dir}:glslang_default_resource_limits_sources",
-      "${angle_glslang_dir}:glslang_sources",
-      "${angle_spirv_tools_dir}:spvtools_val",
+#      "${angle_glslang_dir}:glslang_default_resource_limits_sources",
+#      "${angle_glslang_dir}:glslang_sources",
+#      "${angle_spirv_tools_dir}:spvtools_val",
     ]
-    public_deps += [ "$angle_root/third_party/vulkan-headers:vulkan_headers" ]
+    #public_deps += [ "$angle_root/third_party/vulkan-headers:vulkan_headers" ]
 
     # Include generated shaders.
     import("src/libANGLE/renderer/vulkan/vk_internal_shaders_autogen.gni")
@@ -1065,7 +1065,7 @@ angle_shared_library("libfeature_support${angle_libs_suffix}") {
 
   public_configs += [
     ":angle_feature_support_config",
-    "${angle_jsoncpp_dir}:jsoncpp_config",
+#    "${angle_jsoncpp_dir}:jsoncpp_config",
   ]
 
   if (is_mac && !is_component_build) {
@@ -1082,7 +1082,7 @@ angle_shared_library("libfeature_support${angle_libs_suffix}") {
 
   deps = [
     ":angle_gpu_info_util",
-    "${angle_jsoncpp_dir}:jsoncpp",
+ #   "${angle_jsoncpp_dir}:jsoncpp",
   ]
 }
 

@@ -11,11 +11,20 @@ import("//testing/test.gni")
 if (is_android) {
   import("//build/config/android/config.gni")
 }
+build_with_chromium = true
+is_ubsan = false
+dcheck_always_on = false
+use_x11 = false
+use_ozone = false
+use_fuzzing_engine = false
 
 if (build_with_chromium) {
   angle_root = "//third_party/angle"
 
-  import("//ui/ozone/ozone.gni")
+  #import("//ui/ozone/ozone.gni")
+  declare_args() {
+    ozone_platform_gbm = false
+  }
 } else {
   angle_root = "//"
 
@@ -62,8 +71,9 @@ declare_args() {
   # ANGLE Vulkan backend on Android requires API level 26, i.e. Oreo, due to
   # Vulkan Validation Layers compatibility issues, see http://crrev/c/1405714.
   # Otherwise, API level 24 would have been enough.
-  angle_enable_vulkan = is_win || (is_linux && use_x11 && !is_chromeos) ||
-                        (is_android && ndk_api_level_at_least_26) || is_fuchsia
+  # angle_enable_vulkan = is_win || (is_linux && use_x11 && !is_chromeos) ||
+  #                      (is_android && ndk_api_level_at_least_26) || is_fuchsia
+  angle_enable_vulkan = false
   angle_enable_null = true
   angle_enable_essl = true
   angle_enable_glsl = true
