@@ -15,13 +15,14 @@ namespace angle
 {
 bool CreateTemporaryFile(char *tempFileNameOut, uint32_t maxFileNameLen)
 {
-    constexpr uint32_t kMaxPath = 1000u;
+    /*constexpr uint32_t kMaxPath = 1000u;
     char tempPath[kMaxPath];
 
     if (!GetTempDir(tempPath, kMaxPath))
         return false;
 
-    return CreateTemporaryFileInDir(tempPath, tempFileNameOut, maxFileNameLen);
+    return CreateTemporaryFileInDir(tempPath, tempFileNameOut, maxFileNameLen);*/
+    return false;
 }
 
 bool GetFileSize(const char *filePath, uint32_t *sizeOut)
@@ -67,7 +68,7 @@ ProcessHandle::ProcessHandle(Process *process) : mProcess(process) {}
 ProcessHandle::ProcessHandle(const std::vector<const char *> &args,
                              bool captureStdout,
                              bool captureStderr)
-    : mProcess(LaunchProcess(args, captureStdout, captureStderr))
+    //: mProcess(LaunchProcess(args, captureStdout, captureStderr))
 {}
 
 ProcessHandle::~ProcessHandle()

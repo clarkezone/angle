@@ -19,7 +19,7 @@ class SwapChainPanelNativeWindow : public InspectableNativeWindow,
                                    public std::enable_shared_from_this<SwapChainPanelNativeWindow>
 {
   public:
-    ~SwapChainPanelNativeWindow();
+    virtual ~SwapChainPanelNativeWindow();
 
     bool initialize(EGLNativeWindowType window, IPropertySet *propertySet) override;
     HRESULT createSwapChain(ID3D11Device *device,

@@ -118,7 +118,6 @@ HRESULT CompositorNativeWindow11::createSwapChain(ID3D11Device *device,
     swapChainDesc.Scaling     = DXGI_SCALING_STRETCH;
     swapChainDesc.SwapEffect  = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
     swapChainDesc.AlphaMode   = mHasAlpha ? DXGI_ALPHA_MODE_PREMULTIPLIED : DXGI_ALPHA_MODE_IGNORE;
-    swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT;
     Microsoft::WRL::ComPtr<IDXGISwapChain1> swapChain1;
     hr = factory2->CreateSwapChainForComposition(device, &swapChainDesc, nullptr, &swapChain1);
     if (SUCCEEDED(hr))
@@ -237,10 +236,21 @@ RoHelper::RoHelper()
       mComBaseModule(nullptr),
       mCoreMessagingModule(nullptr)
 {
-    if (!IsWindows10OrGreater())
+    /*if (!IsWindows10OrGreater())
     {
         return;
-    }
+    }*/
+
+	#ifdef ANGLE_ENABLE_WINDOWS_UWP
+    mFpWindowsCreateStringReference    = &::WindowsCreateStringReference;
+    mFpRoInitialize                    = &::RoInitialize;
+    mFpRoUninitialize                  = &::RoUninitialize;
+    mFpWindowsDeleteString             = &::WindowsDeleteString;
+    mFpGetActivationFactory            = &::RoGetActivationFactory;
+    mFpWindowsCompareStringOrdinal     = &::WindowsCompareStringOrdinal;
+    mFpCreateDispatcherQueueController = &::CreateDispatcherQueueController;
+
+	#else
 
     mComBaseModule = LoadLibraryA("ComBase.dll");
 
@@ -255,6 +265,7 @@ RoHelper::RoHelper()
         return;
     }
 
+	
     if (!AssignProcAddress(mComBaseModule, "RoGetActivationFactory", mFpGetActivationFactory))
     {
         return;
@@ -294,17 +305,23 @@ RoHelper::RoHelper()
         return;
     }
 
-    if (SUCCEEDED(RoInitialize(RO_INIT_MULTITHREADED)))
+	auto result = RoInitialize(RO_INIT_SINGLETHREADED);
+
+    if (SUCCEEDED(result))
     {
-        mWinRtAvailable = true;
+        //TODO
     }
+	#endif
+
+	mWinRtAvailable = true;
 }
 
 RoHelper::~RoHelper()
 {
     if (mWinRtAvailable)
     {
-        RoUninitialize();
+		//TODO
+        //RoUninitialize();
     }
 
     if (mCoreMessagingModule != nullptr)
@@ -327,7 +344,8 @@ bool RoHelper::WinRtAvailable() const
 
 bool RoHelper::SupportedWindowsRelease()
 {
-    if (!IsWindows10OrGreater() || !mWinRtAvailable)
+    //if (!IsWindows10OrGreater() || !mWinRtAvailable)
+    if (!mWinRtAvailable)
     {
         return false;
     }

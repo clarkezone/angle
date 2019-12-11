@@ -22,7 +22,7 @@ CoreWindowNativeWindow::~CoreWindowNativeWindow()
 bool CoreWindowNativeWindow::initialize(EGLNativeWindowType window, IPropertySet *propertySet)
 {
     ComPtr<IPropertySet> props = propertySet;
-    ComPtr<IInspectable> win   = window;
+    //ComPtr<IInspectable> win   = window;
     SIZE swapChainSize         = {};
     HRESULT result             = S_OK;
 
@@ -75,7 +75,7 @@ bool CoreWindowNativeWindow::initialize(EGLNativeWindowType window, IPropertySet
 
     if (SUCCEEDED(result))
     {
-        result = win.As(&mCoreWindow);
+        //result = win.As(&mCoreWindow);
     }
 
     if (SUCCEEDED(result))
