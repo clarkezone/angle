@@ -245,6 +245,12 @@ config("includes_config") {
   include_dirs = [ "include" ]
 }
 
+config("uwp_env") {
+    if (angle_is_winuwp) {
+      defines = [ "WINAPI_FAMILY=WINAPI_FAMILY_PC_APP" ]
+    }
+}
+
 angle_source_set("includes") {
   sources = libangle_includes
   public_configs = [ ":includes_config" ]
@@ -611,6 +617,10 @@ config("angle_backend_config") {
   if (angle_enable_vulkan) {
     configs += [ "src/libANGLE/renderer/vulkan:angle_vulkan_backend_config" ]
   }
+
+  if (angle_is_winuwp) {
+    configs += [ "src/libANGLE/renderer/d3d:enableuwp_config" ]
+  }
 }
 
 config("libANGLE_config") {
@@ -717,7 +727,7 @@ angle_source_set("libANGLE_base") {
     ":includes",
   ]
 
-  if (is_win) {
+  if (is_win && !angle_is_winuwp) {
     libs += [
       "gdi32.lib",
       "user32.lib",
@@ -742,6 +752,14 @@ angle_source_set("libANGLE_base") {
 
   if (angle_enable_vulkan) {
     public_deps += [ "src/libANGLE/renderer/vulkan:angle_vulkan_backend" ]
+  }
+
+  if (angle_is_winuwp) {
+    public_deps += [ "src/libANGLE/renderer/d3d:enableuwp_backend" ]
+  }
+
+  if (angle_enable_d3d11) {
+    libs += [ "dxguid.lib" ]
   }
 
   if (angle_enable_metal) {
@@ -985,6 +1003,7 @@ if (is_win && !angle_is_winuwp) {
 angle_static_library("libGLESv2_static") {
   sources = libglesv2_sources
   configs += [ ":debug_annotations_config" ]
+
   public_configs += [ ":angle_static" ]
   deps = [ ":includes" ]
   public_deps = [ ":libANGLE" ]
