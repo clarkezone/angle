@@ -237,10 +237,21 @@ RoHelper::RoHelper()
       mComBaseModule(nullptr),
       mCoreMessagingModule(nullptr)
 {
-    if (!IsWindows10OrGreater())
+    /*if (!IsWindows10OrGreater())
     {
         return;
-    }
+    }*/
+
+	#ifdef ANGLE_ENABLE_WINDOWS_UWP
+    mFpWindowsCreateStringReference    = &::WindowsCreateStringReference;
+    mFpRoInitialize                    = &::RoInitialize;
+    mFpRoUninitialize                  = &::RoUninitialize;
+    mFpWindowsDeleteString             = &::WindowsDeleteString;
+    mFpGetActivationFactory            = &::RoGetActivationFactory;
+    mFpWindowsCompareStringOrdinal     = &::WindowsCompareStringOrdinal;
+    mFpCreateDispatcherQueueController = &::CreateDispatcherQueueController;
+
+	#else
 
     mComBaseModule = LoadLibraryA("ComBase.dll");
 
@@ -255,6 +266,7 @@ RoHelper::RoHelper()
         return;
     }
 
+	
     if (!AssignProcAddress(mComBaseModule, "RoGetActivationFactory", mFpGetActivationFactory))
     {
         return;
@@ -294,17 +306,23 @@ RoHelper::RoHelper()
         return;
     }
 
-    if (SUCCEEDED(RoInitialize(RO_INIT_MULTITHREADED)))
+	auto result = RoInitialize(RO_INIT_SINGLETHREADED);
+
+    if (SUCCEEDED(result))
     {
-        mWinRtAvailable = true;
+        //TODO
     }
+	#endif
+
+	mWinRtAvailable = true;
 }
 
 RoHelper::~RoHelper()
 {
     if (mWinRtAvailable)
     {
-        RoUninitialize();
+		//TODO
+        //RoUninitialize();
     }
 
     if (mCoreMessagingModule != nullptr)
@@ -327,7 +345,8 @@ bool RoHelper::WinRtAvailable() const
 
 bool RoHelper::SupportedWindowsRelease()
 {
-    if (!IsWindows10OrGreater() || !mWinRtAvailable)
+    //if (!IsWindows10OrGreater() || !mWinRtAvailable)
+    if (!mWinRtAvailable)
     {
         return false;
     }
