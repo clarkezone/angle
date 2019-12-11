@@ -704,6 +704,21 @@ angle_source_set("libANGLE_base") {
   if (angle_enable_vulkan) {
     public_deps += [ "src/libANGLE/renderer/vulkan:angle_vulkan_backend" ]
   }
+  
+  if (angle_enable_d3d11) {
+    sources += libangle_d3d11_sources
+
+    if (angle_is_winuwp) {
+      defines += ["ANGLE_ENABLE_WINDOWS_UWP 1"]
+      sources += libangle_d3d11_winuwp_sources
+    } else {
+      sources += libangle_d3d11_win32_sources
+    }
+
+    libs += [ "dxguid.lib" ]
+    import("src/libANGLE/renderer/d3d/d3d11/d3d11_blit_shaders_autogen.gni")
+    sources += libangle_d3d11_blit_shaders
+  }
 
   if (angle_enable_metal) {
     public_deps += [ "src/libANGLE/renderer/metal:angle_metal_backend" ]
@@ -946,6 +961,11 @@ if (is_win && !angle_is_winuwp) {
 angle_static_library("libGLESv2_static") {
   sources = libglesv2_sources
   configs += [ ":debug_annotations_config" ]
+
+ if (angle_is_winuwp) {
+      defines = ["ANGLE_ENABLE_WINDOWS_UWP 1"]
+  }
+
   public_configs += [ ":angle_static" ]
   deps = [ ":includes" ]
   public_deps = [ ":libANGLE" ]
