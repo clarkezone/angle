@@ -1349,6 +1349,7 @@ NativeWindowD3D *Renderer11::createNativeWindow(EGLNativeWindowType window,
     // {
     //     return new NativeWindow11WinRT(window, config->alphaSize > 0);
     // }
+    return nullptr;
 #else
     auto useWinUiComp = window != nullptr && !NativeWindow11Win32::IsValidNativeWindow(window);
 
