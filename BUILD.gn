@@ -638,6 +638,7 @@ angle_source_set("libANGLE_base") {
     sources += libangle_d3d11_sources
 
     if (angle_is_winuwp) {
+      defines += ["ANGLE_ENABLE_WINDOWS_UWP 1"]
       sources += libangle_d3d11_winuwp_sources
     } else {
       sources += libangle_d3d11_win32_sources
