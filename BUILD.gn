@@ -900,6 +900,11 @@ if (is_win && !angle_is_winuwp) {
 angle_static_library("libGLESv2_static") {
   sources = libglesv2_sources
   configs += [ ":debug_annotations_config" ]
+
+ if (angle_is_winuwp) {
+      defines = ["ANGLE_ENABLE_WINDOWS_UWP 1"]
+  }
+
   public_configs += [ ":angle_static" ]
   deps = [ ":includes" ]
   public_deps = [ ":libANGLE" ]
