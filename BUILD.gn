@@ -624,10 +624,12 @@ angle_source_set("libANGLE_base") {
     if (angle_enable_d3d9) {
       libs += [ "delayimp.lib" ]
     }
-    libs += [
-      "gdi32.lib",
-      "user32.lib",
-    ]
+    if (!angle_is_winuwp) {
+      libs += [
+        "gdi32.lib",
+        "user32.lib",
+      ]
+    }
   }
 
   if (angle_enable_vulkan) {
