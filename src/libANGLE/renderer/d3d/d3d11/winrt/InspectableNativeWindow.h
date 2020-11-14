@@ -18,8 +18,8 @@
 #include <EGL/eglplatform.h>
 
 #include <windows.applicationmodel.core.h>
-#include <windows.ui.xaml.h>
-#include <windows.ui.xaml.media.dxinterop.h>
+//#include <windows.ui.xaml.h>
+//#include <windows.ui.xaml.media.dxinterop.h>
 #include <wrl.h>
 #include <wrl/wrappers/corewrappers.h>
 
@@ -119,9 +119,9 @@ class InspectableNativeWindow
 
 bool IsCoreWindow(EGLNativeWindowType window,
                   ComPtr<ABI::Windows::UI::Core::ICoreWindow> *coreWindow = nullptr);
-bool IsSwapChainPanel(
-    EGLNativeWindowType window,
-    ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> *swapChainPanel = nullptr);
+//bool IsSwapChainPanel(
+//    EGLNativeWindowType window,
+//    ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> *swapChainPanel = nullptr);
 bool IsEGLConfiguredPropertySet(
     EGLNativeWindowType window,
     ABI::Windows::Foundation::Collections::IPropertySet **propertySet = nullptr,

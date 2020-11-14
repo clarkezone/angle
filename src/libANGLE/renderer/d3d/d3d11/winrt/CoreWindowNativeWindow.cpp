@@ -75,7 +75,8 @@ bool CoreWindowNativeWindow::initialize(EGLNativeWindowType window, IPropertySet
 
     if (SUCCEEDED(result))
     {
-        //result = win.As(&mCoreWindow);
+        ComPtr<IInspectable> fff = (IInspectable *)window;
+        result = fff.As(&mCoreWindow);
     }
 
     if (SUCCEEDED(result))

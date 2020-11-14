@@ -11,7 +11,7 @@
 #include "libANGLE/renderer/d3d/d3d11/renderer11_utils.h"
 #include "libANGLE/renderer/d3d/d3d11/winrt/CoreWindowNativeWindow.h"
 #include "libANGLE/renderer/d3d/d3d11/winrt/InspectableNativeWindow.h"
-#include "libANGLE/renderer/d3d/d3d11/winrt/SwapChainPanelNativeWindow.h"
+//#include "libANGLE/renderer/d3d/d3d11/winrt/SwapChainPanelNativeWindow.h"
 
 using namespace Microsoft::WRL;
 using namespace Microsoft::WRL::Wrappers;
@@ -42,7 +42,7 @@ bool NativeWindow11WinRT::initialize()
     }
 
     ComPtr<ABI::Windows::UI::Core::ICoreWindow> coreWindow;
-    ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> swapChainPanel;
+    //ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> swapChainPanel;
     if (IsCoreWindow(window, &coreWindow))
     {
         mImpl = std::make_shared<CoreWindowNativeWindow>();
@@ -51,14 +51,14 @@ bool NativeWindow11WinRT::initialize()
             return mImpl->initialize(window, propertySet.Get());
         }
     }
-    else if (IsSwapChainPanel(window, &swapChainPanel))
+    /*else if (IsSwapChainPanel(window, &swapChainPanel))
     {
         mImpl = std::make_shared<SwapChainPanelNativeWindow>();
         if (mImpl)
         {
             return mImpl->initialize(window, propertySet.Get());
         }
-    }
+    }*/
     else
     {
         ERR() << "Invalid IInspectable EGLNativeWindowType detected. Valid IInspectables include "
@@ -123,7 +123,8 @@ bool NativeWindow11WinRT::IsValidNativeWindow(EGLNativeWindowType window)
     // IPropertySet
     //
     // Anything else will be rejected as an invalid IInspectable.
-    return IsCoreWindow(window) || IsSwapChainPanel(window) || IsEGLConfiguredPropertySet(window);
+    //return IsCoreWindow(window) || IsSwapChainPanel(window) || IsEGLConfiguredPropertySet(window);
+	return IsCoreWindow(window) || IsEGLConfiguredPropertySet(window);
 }
 
 }  // namespace rx

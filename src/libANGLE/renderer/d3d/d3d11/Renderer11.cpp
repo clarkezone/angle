@@ -63,11 +63,11 @@
 #include "libANGLE/trace.h"
 
 #ifdef ANGLE_ENABLE_WINDOWS_UWP
-#    //include "libANGLE/renderer/d3d/d3d11/winrt/NativeWindow11WinRT.h"
-#    include "libANGLE/renderer/d3d/d3d11/converged/CompositorNativeWindow11.h"
+#include "libANGLE/renderer/d3d/d3d11/winrt/NativeWindow11WinRT.h"
+#include "libANGLE/renderer/d3d/d3d11/converged/CompositorNativeWindow11.h"
 #else
-#    include "libANGLE/renderer/d3d/d3d11/converged/CompositorNativeWindow11.h"
-#    include "libANGLE/renderer/d3d/d3d11/win32/NativeWindow11Win32.h"
+#include "libANGLE/renderer/d3d/d3d11/converged/CompositorNativeWindow11.h"
+#include "libANGLE/renderer/d3d/d3d11/win32/NativeWindow11Win32.h"
 #endif
 
 // Enable ANGLE_SKIP_DXGI_1_2_CHECK if there is not a possibility of using cross-process
@@ -1374,8 +1374,8 @@ bool Renderer11::isValidNativeWindow(EGLNativeWindowType window) const
                   "Pointer size must match Window Handle size");
 
 #if defined(ANGLE_ENABLE_WINDOWS_UWP)
-    // bool winrt = NativeWindow11WinRT::IsValidNativeWindow(window);
-    // if (!winrt)
+     bool winrt = NativeWindow11WinRT::IsValidNativeWindow(window);
+     if (!winrt)
     {
         return CompositorNativeWindow11::IsValidNativeWindow(window);
     }
@@ -1401,11 +1401,10 @@ NativeWindowD3D *Renderer11::createNativeWindow(EGLNativeWindowType window,
     {
         return new CompositorNativeWindow11(window, config->alphaSize > 0);
     }
-    // else
-    // {
-    //     return new NativeWindow11WinRT(window, config->alphaSize > 0);
-    // }
-    return nullptr;
+    else
+    {
+        return new NativeWindow11WinRT(window, config->alphaSize > 0);
+    }
 #else
     auto useWinUiComp = window != nullptr && !NativeWindow11Win32::IsValidNativeWindow(window);
 

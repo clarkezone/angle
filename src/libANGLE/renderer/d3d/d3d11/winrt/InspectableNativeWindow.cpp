@@ -8,7 +8,7 @@
 // types.
 
 #include "libANGLE/renderer/d3d/d3d11/winrt/CoreWindowNativeWindow.h"
-#include "libANGLE/renderer/d3d/d3d11/winrt/SwapChainPanelNativeWindow.h"
+//#include "libANGLE/renderer/d3d/d3d11/winrt/SwapChainPanelNativeWindow.h"
 
 namespace rx
 {
@@ -35,27 +35,27 @@ bool IsCoreWindow(EGLNativeWindowType window,
     return false;
 }
 
-bool IsSwapChainPanel(EGLNativeWindowType window,
-                      ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> *swapChainPanel)
-{
-    if (!window)
-    {
-        return false;
-    }
-
-    ComPtr<IInspectable> win = window;
-    ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> panel;
-    if (SUCCEEDED(win.As(&panel)))
-    {
-        if (swapChainPanel != nullptr)
-        {
-            *swapChainPanel = panel;
-        }
-        return true;
-    }
-
-    return false;
-}
+//bool IsSwapChainPanel(EGLNativeWindowType window,
+//                      ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> *swapChainPanel)
+//{
+//    if (!window)
+//    {
+//        return false;
+//    }
+//
+//    ComPtr<IInspectable> win = window;
+//    ComPtr<ABI::Windows::UI::Xaml::Controls::ISwapChainPanel> panel;
+//    if (SUCCEEDED(win.As(&panel)))
+//    {
+//        if (swapChainPanel != nullptr)
+//        {
+//            *swapChainPanel = panel;
+//        }
+//        return true;
+//    }
+//
+//    return false;
+//}
 
 bool IsEGLConfiguredPropertySet(EGLNativeWindowType window,
                                 ABI::Windows::Foundation::Collections::IPropertySet **propertySet,
@@ -66,7 +66,7 @@ bool IsEGLConfiguredPropertySet(EGLNativeWindowType window,
         return false;
     }
 
-    ComPtr<IInspectable> props = window;
+    ComPtr<IInspectable> props = (IInspectable*)window;
     ComPtr<IPropertySet> propSet;
     ComPtr<IInspectable> nativeWindow;
     ComPtr<ABI::Windows::Foundation::Collections::IMap<HSTRING, IInspectable *>> propMap;
