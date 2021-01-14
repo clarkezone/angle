@@ -228,7 +228,7 @@ config("includes_config") {
   include_dirs = [ "include" ]
 }
 
-config("uwp_env") {
+config("angle_uwp_env") {
     if (angle_is_winuwp) {
       defines = [ "WINAPI_FAMILY=WINAPI_FAMILY_PC_APP" ]
     }
@@ -592,7 +592,7 @@ config("angle_backend_config") {
   }
 
   if (angle_is_winuwp) {
-    configs += [ "src/libANGLE/renderer/d3d:enableuwp_config" ]
+    configs += [ "src/libANGLE/renderer/d3d:angle_enable_winuwp_config" ]
   }
 }
 
@@ -728,7 +728,7 @@ angle_source_set("libANGLE_base") {
   }
 
   if (angle_is_winuwp) {
-    public_deps += [ "src/libANGLE/renderer/d3d:enableuwp_backend" ]
+    public_deps += [ "src/libANGLE/renderer/d3d:angle_enable_winuwp" ]
   }
 
   if (angle_enable_d3d11) {
