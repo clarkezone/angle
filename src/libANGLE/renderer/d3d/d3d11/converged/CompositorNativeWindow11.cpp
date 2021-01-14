@@ -118,7 +118,7 @@ HRESULT CompositorNativeWindow11::createSwapChain(ID3D11Device *device,
     swapChainDesc.Scaling     = DXGI_SCALING_STRETCH;
     swapChainDesc.SwapEffect  = DXGI_SWAP_EFFECT_FLIP_SEQUENTIAL;
     swapChainDesc.AlphaMode   = mHasAlpha ? DXGI_ALPHA_MODE_PREMULTIPLIED : DXGI_ALPHA_MODE_IGNORE;
-    #ifndef ANGLE_ENABLE_WINDOWS_UWP
+    #if !defined(ANGLE_ENABLE_WINDOWS_UWP) 
     swapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_FRAME_LATENCY_WAITABLE_OBJECT;
     #endif
     Microsoft::WRL::ComPtr<IDXGISwapChain1> swapChain1;
