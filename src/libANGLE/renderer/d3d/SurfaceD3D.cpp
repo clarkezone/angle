@@ -369,7 +369,8 @@ egl::Error SurfaceD3D::postSubBuffer(const gl::Context *context,
                                      EGLint height)
 {
     DisplayD3D *displayD3D = GetImplAs<DisplayD3D>(context->getDisplay());
-    return swapRect(displayD3D, x, y, width, height);
+    //return swapRect(displayD3D, x, y, width, height);
+    return checkForOutOfDateSwapChain(displayD3D);
 }
 
 rx::SwapChainD3D *SurfaceD3D::getSwapChain() const
