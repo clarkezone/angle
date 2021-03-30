@@ -157,11 +157,12 @@ void SwapChain11::releaseOffscreenDepthBuffer()
 
 EGLint SwapChain11::resetOffscreenBuffers(DisplayD3D *displayD3D,
                                           int backbufferWidth,
-                                          int backbufferHeight)
+                                          int backbufferHeight,
+                                          bool preserve)
 {
     if (mNeedsOffscreenTexture)
     {
-        EGLint result = resetOffscreenColorBuffer(displayD3D, backbufferWidth, backbufferHeight);
+        EGLint result = resetOffscreenColorBuffer(displayD3D, backbufferWidth, backbufferHeight, preserve);
         if (result != EGL_SUCCESS)
         {
             return result;
@@ -182,7 +183,8 @@ EGLint SwapChain11::resetOffscreenBuffers(DisplayD3D *displayD3D,
 
 EGLint SwapChain11::resetOffscreenColorBuffer(DisplayD3D *displayD3D,
                                               int backbufferWidth,
-                                              int backbufferHeight)
+                                              int backbufferHeight,
+                                              bool preserve)
 {
     ASSERT(mNeedsOffscreenTexture);
 
@@ -336,7 +338,7 @@ EGLint SwapChain11::resetOffscreenColorBuffer(DisplayD3D *displayD3D,
         mNeedsOffscreenTextureCopy = true;
     }
 
-    if (previousOffscreenTexture.valid())
+    if (previousOffscreenTexture.valid() && preserve)
     {
         D3D11_BOX sourceBox = {};
         sourceBox.left      = 0;
@@ -532,7 +534,7 @@ EGLint SwapChain11::resize(DisplayD3D *displayD3D, EGLint backbufferWidth, EGLin
 
     mFirstSwap = true;
 
-    return resetOffscreenBuffers(displayD3D, backbufferWidth, backbufferHeight);
+    return resetOffscreenBuffers(displayD3D, backbufferWidth, backbufferHeight, false);
 }
 
 DXGI_FORMAT SwapChain11::getSwapChainNativeFormat() const
@@ -653,7 +655,7 @@ EGLint SwapChain11::reset(DisplayD3D *displayD3D,
 
     mFirstSwap = true;
 
-    return resetOffscreenBuffers(displayD3D, backbufferWidth, backbufferHeight);
+    return resetOffscreenBuffers(displayD3D, backbufferWidth, backbufferHeight, true);
 }
 
 angle::Result SwapChain11::initPassThroughResources(DisplayD3D *displayD3D)

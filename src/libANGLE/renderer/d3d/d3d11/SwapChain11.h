@@ -67,10 +67,11 @@ class SwapChain11 final : public SwapChainD3D
 
     void releaseOffscreenColorBuffer();
     void releaseOffscreenDepthBuffer();
-    EGLint resetOffscreenBuffers(DisplayD3D *displayD3D, int backbufferWidth, int backbufferHeight);
+    EGLint resetOffscreenBuffers(DisplayD3D *displayD3D, int backbufferWidth, int backbufferHeight, bool preserve);
     EGLint resetOffscreenColorBuffer(DisplayD3D *displayD3D,
                                      int backbufferWidth,
-                                     int backbufferHeight);
+                                     int backbufferHeight,
+                                     bool preserve);
     EGLint resetOffscreenDepthBuffer(DisplayD3D *displayD3D,
                                      int backbufferWidth,
                                      int backbufferHeight);
